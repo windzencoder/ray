@@ -1,0 +1,96 @@
+/*
+ * Copyright (c) 2016 Razeware LLC
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+import UIKit
+
+class ViewController: UIViewController {
+  
+  // MARK: ui outlets
+  
+  @IBOutlet var loginButton: UIButton!
+  @IBOutlet var heading: UILabel!
+  @IBOutlet var username: UITextField!
+  @IBOutlet var password: UITextField!
+  
+  @IBOutlet var cloud1: UIImageView!
+  @IBOutlet var cloud2: UIImageView!
+  @IBOutlet var cloud3: UIImageView!
+  @IBOutlet var cloud4: UIImageView!
+  
+  var didInitialLayout = false
+  let info = UILabel()
+  
+  // MARK: view controller lifecycle
+  
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    
+    if !didInitialLayout {
+      presentationAnimations()
+      didInitialLayout = true
+    }
+    
+    animateInfo()
+    
+  }
+  
+  func presentationAnimations() {
+    
+    let flyRight = CABasicAnimation(keyPath: "position.x")
+    flyRight.fromValue = -view.bounds.width / 2
+    flyRight.toValue = view.bounds.size.width / 2
+    flyRight.duration = 0.5
+    heading.layer.addAnimation(flyRight, forKey: nil)
+    username.layer.addAnimation(flyRight, forKey: nil)
+    password.layer.addAnimation(flyRight, forKey: nil)
+    
+  }
+  
+  func animateInfo() {
+    //add text info
+    info.frame = CGRect(x: 0.0, y: loginButton.center.y + 30.0,
+                                width: view.frame.size.width, height: 30)
+    info.backgroundColor = UIColor.clearColor()
+    info.font = UIFont(name: "HelveticaNeue", size: 12.0)
+    info.textAlignment = .Center
+    info.textColor = UIColor.whiteColor()
+    info.text = "Tap on a field and enter username and password"
+    view.insertSubview(info, belowSubview: loginButton)
+    
+    let flyLeft = CABasicAnimation(keyPath: "position.x")
+    flyLeft.fromValue = self.view.bounds.width + info.layer.position.x
+    flyLeft.toValue = self.view.bounds.width / 2
+    flyLeft.duration = 2.0
+    info.layer.addAnimation(flyLeft, forKey: nil)
+    
+    let fadeIn = CABasicAnimation(keyPath: "opacity")
+    fadeIn.fromValue = 0.0
+    fadeIn.toValue = 1.0
+    fadeIn.duration = 2.0
+    info.layer.addAnimation(fadeIn, forKey: nil)
+    
+  }
+  
+  @IBAction func actionLogin(sender: AnyObject) {
+    
+  }
+}
