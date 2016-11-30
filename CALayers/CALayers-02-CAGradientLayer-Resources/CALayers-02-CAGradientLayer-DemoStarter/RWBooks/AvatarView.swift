@@ -29,6 +29,23 @@ class AvatarView: UIView {
   let labelName = UILabel()
   let imageView = UIImageView()
   
+    @IBInspectable var strokeColor: UIColor = UIColor.blackColor() {
+        didSet{
+            configure()
+        }
+    }
+    
+    let layerGradient = CAGradientLayer()
+    @IBInspectable var startColor: UIColor = UIColor.whiteColor() {
+        didSet{
+            configure()
+        }
+    }
+    @IBInspectable var endColor: UIColor = UIColor.blackColor() {
+        didSet{
+            configure()
+        }
+    }
   
   @IBInspectable var imageAvatar: UIImage? {
     didSet {
@@ -53,11 +70,16 @@ class AvatarView: UIView {
   }
 
   func setup() {
+    //set gradient
     
-    imageView.layer.borderColor = UIColor.blackColor().CGColor
+    layer.addSublayer(layerGradient)
+    
+    
+    
+    // Stroke Avatar 
+    imageView.layer.borderColor = strokeColor.CGColor
     imageView.layer.borderWidth = 5
     imageView.layer.masksToBounds = true
-    
     
     // Setup image view
     imageView.contentMode = .ScaleAspectFit
@@ -90,12 +112,24 @@ class AvatarView: UIView {
     // Configure image view and label
     imageView.image = imageAvatar
     labelName.text = avatarName
+    
+    
+    //configure gradient
+    layerGradient.colors = [startColor.CGColor, endColor.CGColor]
+    layerGradient.startPoint = CGPoint(x: 0.5, y: 0)
+    layerGradient.endPoint = CGPoint(x: 0.5, y: 1)
+    
+    
+    
   }
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    imageView.layer.cornerRadius = CGRectGetHeight(imageView.bounds) / 2.0
-
+    imageView.layer.cornerRadius = CGRectGetHeight(imageView.bounds)/2.0
+    
+    //set frame
+    layerGradient.frame = CGRect(x: 0, y: 0, width: CGRectGetWidth(self.bounds), height: CGRectGetMidY(self.frame))
+    
   }
   
 }

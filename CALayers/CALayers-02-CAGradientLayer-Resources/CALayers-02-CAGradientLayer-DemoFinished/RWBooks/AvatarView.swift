@@ -29,6 +29,12 @@ class AvatarView: UIView {
   let labelName = UILabel()
   let imageView = UIImageView()
   
+  let strokeColor = UIColor.blackColor()
+  
+  let layerGradient = CAGradientLayer()
+  
+  let startColor = UIColor.whiteColor()
+  let endColor = UIColor.blackColor()
   
   @IBInspectable var imageAvatar: UIImage? {
     didSet {
@@ -54,10 +60,13 @@ class AvatarView: UIView {
 
   func setup() {
     
-    imageView.layer.borderColor = UIColor.blackColor().CGColor
+    // Setup gradient
+    layer.addSublayer(layerGradient)
+    
+    // Stroke Avatar 
+    imageView.layer.borderColor = strokeColor.CGColor
     imageView.layer.borderWidth = 5
     imageView.layer.masksToBounds = true
-    
     
     // Setup image view
     imageView.contentMode = .ScaleAspectFit
@@ -90,12 +99,20 @@ class AvatarView: UIView {
     // Configure image view and label
     imageView.image = imageAvatar
     labelName.text = avatarName
+    
+    // Configure gradient
+    layerGradient.colors = [startColor.CGColor, endColor.CGColor]
+    layerGradient.startPoint = CGPoint(x: 0.5, y: 0)
+    layerGradient.endPoint = CGPoint(x: 0.5, y: 1)
+    
   }
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    imageView.layer.cornerRadius = CGRectGetHeight(imageView.bounds) / 2.0
-
+    imageView.layer.cornerRadius = CGRectGetHeight(imageView.bounds)/2.0
+    
+    // Gradient
+    layerGradient.frame = CGRect(x: 0, y: 0, width: CGRectGetWidth(self.bounds), height: CGRectGetMidY(imageView.frame))
   }
   
 }
